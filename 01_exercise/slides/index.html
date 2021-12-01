@@ -1,0 +1,536 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>WSB - Database Systems</title>
+
+		<!-- bootstrap -->
+		<link rel="stylesheet" href="ext/bootstrap-4.0.0-beta/bootstrap.min.css">
+
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<style>
+			.reveal section img {
+				background-color:white;
+				border:0;
+				box-shadow: 0 0 0 0;
+			}
+		</style>
+	</head>
+	<body>
+
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h3>D<span style="text-transform: lowercase;">atabase Systems</span></h3>
+					<img width="60%" src="https://v.wpimg.pl/NF8wLmpwYSdZFTpeXwxsMhpNbgQZVWJkTVV2T18UYXcPRXwVXx4jIRYTIw8CEj40VxA-DB0OYDZUWAUAERArNRciCy5fQX91D0BjX0BGe3YBR39cQEN9dgwofEMaBylkRQ" />
+					<!-- https://en.wikipedia.org/wiki/File:FrigatePallada.jpg -->
+
+					<p><small>W<span style="text-transform: lowercase;">ojciech </span>B<span style="text-transform: lowercase;">arczynski </span> (WSB, 2021)</small></p>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+### W<span style="text-transform: lowercase;">hoami</span>
+
+Wojciech Barczyński:
+
+- System Engineer
+- Lead @ Codility
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+### E<span style="text-transform: lowercase;">xercise</span>
+
+1. Problem
+2. We work on solving it yourself [timebox]
+3. Ask
+4. If done - please share with the instructor
+5. No copy&paste from the manual
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+### BYOD
+
+Recommended bring your own laptop.
+
+<img width="40%" style="object-fit: fill;" src="https://api.culture.pl/sites/default/files/styles/1920_auto/public/2018-09/zumbach_303_gettyimages-3242439.jpg" />
+
+					</script>
+				</section>
+
+
+				<section data-markdown>
+					<script type="text/template">
+### Q<span style="text-transform: lowercase;">uick check</span>
+
+Your experience with:
+
+- Programing languages?
+- Databases?
+- NoSQL?
+- Did you ever use SQL?
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+### A<span style="text-transform: lowercase;">im of the course</span>
+
+1. RDMS & SQL
+2. Design good database
+3. Different types of database systems, e.g., mongodb, Google BigQuery
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+### I<span style="text-transform: lowercase;">ntuition</span>
+
+- What is a database?
+- Let's imagine we need to build one...
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+### A<span style="text-transform: lowercase;">round us</span>
+
+- Youtube
+- Self-driving cars
+
+					</script>
+				</section>
+
+				<section>
+					<h5>ATM</h5>
+					<div class="container">
+						<div class="row">
+							<div class='col-md-6'>
+								<img width="100%" style="object-fit: fill;" src="https://www.dignited.com/wp-content/uploads/2019/02/how-atm-deposit-works.png" />
+							</div>
+							<div class='col-md-6'>
+								<p>Operations</p>
+								<ul>
+									<li>Read Balance</li>
+									<li>Update Balance</li>
+									<li>Give Money</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h5>ATM</h5>
+					<div class="container">
+						<div class="row">
+							<div class='col-md-6'>
+								<img width="100%" style="object-fit: fill;" src="https://www.dignited.com/wp-content/uploads/2019/02/how-atm-deposit-works.png" />
+							</div>
+							<div class='col-md-6'>
+								<p>Operations</p>
+								<ul>
+									<li>Read Balance</li>
+									<li>Give Money</li>
+									<li>Update Balance</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h5>S<span style="text-transform: lowercase;">tandard</span> DB</h5>
+					<div class="container">
+						<div class="row">
+							<div class='col-md-6'>
+								<img width="100%" style="object-fit: fill;" src="img/database.svg" />
+							</div>
+							<div class='col-md-6'>
+								<p>Supporting</p>
+								<ul>
+									<li>Scale</li>
+									<li>Speed</li>
+									<li>Stability</li>
+									<li>Reliability</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+### S<span style="text-transform: lowercase;">pecialisation</span>
+
+- store data (lots of reads)
+- optimize historical data (e.g., logs)
+- run batch workflows (e.g., training)
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+### S<span style="text-transform: lowercase;">pecialisation</span>
+
+<p>We have over 100+ databases on the market:</p>
+
+- MySQL, Postgres, SAP, Oracle, Sqlite, Mongo,...
+- Cloud: GCP, AWS, Bigquery, Coackroach,
+
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+### A<span style="text-transform: lowercase;">pp example</span>
+
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+### G<span style="text-transform: lowercase;">ame app</span>
+
+<img width="70%" src="https://cloud.google.com/architecture/images/mass-cloud-sql-overview.svg" />
+
+<p><small>[src](https://cloud.google.com/architecture/mobile-game-backend-cloud-sql)</small></p>
+					</script>
+				</section>
+
+
+				<section data-markdown>
+					<script type="text/template">
+### G<span style="text-transform: lowercase;">ame app</span>
+
+<img width="80%" src="https://cloud.google.com/architecture/mobile/images/telemetry-01-reference-architecture.png" />
+
+<p><small>[src](https://cloud.google.com/architecture/mobile-gaming-analysis-telemetry)</small></p>
+					</script>
+				</section>
+
+
+				<section data-markdown>
+					<script type="text/template">
+### G<span style="text-transform: lowercase;">ame app</span>
+
+<img width="60%" src="https://cloud.google.com/architecture/images/microservices-with-app-engine.png" />
+
+<p><small>[src](https://cloud.google.com/architecture/microservices-with-app-engine?hl=en)</small></p>
+</script>
+</section>
+
+				<!-- section data-markdown>
+					<script type="text/template">
+<a href="https://aws.amazon.com/products/storage/data-lake-storage/infographic/?sc_icampaign=Other_CSI_09_2019_Storage_DataLake_Whitepaper_SiteMerch-Mid-Page-Banner">
+	<img width="80%" style="object-fit: fill;" src="https://d1.awsstatic.com/Data%20Lakes%20Storage%20Infrastructure/AWS_Data_Lake_Storage_Infographic.b2104b3efbc794edc6585ebd636f97e86b616adb.png" />
+</a>
+					</script>
+				</section -->
+
+				<section data-markdown>
+					<script type="text/template">
+### D<span style="text-transform: lowercase;">atabases</span>
+
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+### T<span style="text-transform: lowercase;">wo</span> B<span style="text-transform: lowercase;">ig ideas</span>
+
+- Declarative interfaces
+- Transactions
+
+					</script>
+				</section>
+				<!-- https://web.stanford.edu/class/cs245/slides/01-Introduction.pdf -->
+
+				<section data-markdown>
+					<script type="text/template">
+### D<span style="text-transform: lowercase;">eclarative interfaces</span>
+
+- Apps specify what they want, not how to do it
+- Example: “store a table with 2 integer columns”, but not how to encode it on disk
+- Example: “count records where column1 = 5”
+					</script>
+				</section>
+				<!-- https://web.stanford.edu/class/cs245/slides/01-Introduction.pdf -->
+
+
+				<section data-markdown>
+					<script type="text/template">
+### T<span style="text-transform: lowercase;">ransactions</span>
+
+- Encapsulate multiple app actions into one atomic request (fails or succeeds as a whole)
+- Concurrency models for multiple users
+- Clear interactions with failure recovery
+					</script>
+				</section>
+				<!-- https://web.stanford.edu/class/cs245/slides/01-Introduction.pdf -->
+
+
+				<section data-markdown>
+					<script type="text/template">
+### D<span style="text-transform: lowercase;">eclarative interfaces</span>
+
+SQL:
+
+- Abstract “table” data model, many physical implementations
+- Specify queries in a restricted language that the database can optimize
+					</script>
+				</section>
+				<!-- https://web.stanford.edu/class/cs245/slides/01-Introduction.pdf -->
+
+				<section data-markdown>
+					<script type="text/template">
+### T<span style="text-transform: lowercase;">rasaction</span>
+
+- SQL:
+  - Commands to start, abort or end transactions
+  - based on multiple SQL statements
+
+- Apache Spark:
+  - multi-part output of a job appear atomically when all particitns are done
+
+					</script>
+				</section>
+				<!-- https://web.stanford.edu/class/cs245/slides/01-Introduction.pdf -->
+
+				<!-- section data-markdown>
+					<script type="text/template">
+### E<span style="text-transform: lowercase;">dgar</span> F C<span style="text-transform: lowercase;">odd</span>
+<div class="container">
+	<div class="row">
+		<div class='col-md-4'>
+			<img width="100%" style="object-fit: fill;" src="https://upload.wikimedia.org/wikipedia/en/5/58/Edgar_F_Codd.jpg" />
+		</div>
+		<div class='col-md-8'>
+			<ul>
+				<li>Proposed the relational DB
+				model,<br /> with declarative
+				queries & storage (1970)</li>
+				<li>Relation = table with unique
+				key identifying each row</li>
+			</ul>
+		</div>
+</div>
+					</script>
+				</section -->
+				<!-- https://web.stanford.edu/class/cs245/slides/01-Introduction.pdf -->
+
+
+				<!-- section data-markdown>
+					<script type="text/template">
+### H<span style="text-transform: lowercase;">istory</span>
+
+[Timeline](https://web.stanford.edu/class/cs245/slides/01-Introduction.pdf):
+
+- data storage
+- navigational databases (1964)
+- IBM System R (1974)
+- Ingress (1974) - led to PostgreSQL
+- Oracle database (1979)
+					</script>
+				</section -->
+				<!-- https://web.stanford.edu/class/cs245/slides/01-Introduction.pdf -->
+
+				<section data-markdown>
+					<script type="text/template">
+## <span style="text-transform: lowercase;"></span>SQL 1
+
+<img src="img/Blog_Babelfish-750x422-c-default.png" />
+
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+### <span style="text-transform: lowercase;"></span>SQL 1
+<div class="container">
+	<div class="row">
+		<div class='col-md-7'>
+			<img width="100%" style="object-fit: fill;" src="img/screenshot_spreadsheet_db.png" />
+		</div>
+		<div class='col-md-5'>
+			<p>Tables</p>
+			<small><ul>
+				<li>Student(sid:str, name:str, gpa:float)</li>
+				<li>Course(cid:str, name:str, room:str)</li>
+				<li>Enrolled(sid:str, cid:str, grade:float)<br />sid &#8594; Student <br />cid &#8594; Course</li>
+			</ul></small>
+			<p><small>[spreadsheet](https://docs.google.com/spreadsheets/d/1-Z_ZReHT26HvaX_Q3ndHeVsxRK6BD8gP7eruEUTnees/edit#gid=0)</small></p>
+		</div>
+	</div>
+</div>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+### I<span style="text-transform: lowercase;">ntroduction</span>
+<div class="container">
+	<div class="row">
+		<div class='col-md-7'>
+			<img width="100%" style="object-fit: fill;" src="img/screenshot_spreadsheet_db.png" />
+		</div>
+		<div class='col-md-5'>
+			<p>Queries</p>
+			<p><ul>
+				<li>GPA of Student Tom?</li>
+				<li>AVG student GPA?</li>
+				<li>Helene's classes?</li>
+			</ul></p>
+			<p><small>[spreadsheet](https://docs.google.com/spreadsheets/d/1-Z_ZReHT26HvaX_Q3ndHeVsxRK6BD8gP7eruEUTnees/edit#gid=0)</small></p>
+		</div>
+	</div>
+</div>
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+### SQL
+
+<img src="https://www.sqltutorial.org/wp-content/uploads/2016/04/SQL-Cheet-Sheet-1.png" width="70%" />
+
+<p><small>[http://www.sqltutorial.org/sql-cheat-sheet/](http://www.sqltutorial.org/sql-cheat-sheet/,)</small></p>
+					</script>
+				</section>
+
+				<section data-markdown>
+						<script type="text/template">
+### E<span style="text-transform: lowercase;">xample</span>
+
+- [w3schools.com/sql](https://www.w3schools.com/sql/)
+- [trysql](https://www.w3schools.com/sql/trysql.asp?filename=trysql_select_all)
+						</script>
+				</section>
+
+<!--
+https://www.w3schools.com/sql/sql_join.asp
+
+SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate
+FROM Orders
+INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID;
+-->
+
+				<section data-markdown>
+					<script type="text/template">
+## I<span style="text-transform: lowercase;">ntro</span> SQL
+
+- [slides](https://docs.google.com/presentation/d/1wVU8ybb9Zxyno3MpQA-vnGTX7bBD5bliysigxGIYAcI/edit#slide=id.g63c48efc72_3_35)
+
+					</script>
+				</section>
+
+				<!--
+					Koniec
+				-->
+				<section>
+					<h3>Q<span style="text-transform: lowercase;">uestions?</span></h3>
+
+					<!-- img src="img/reflector_49842649546_b4cea27ea5_c.jpg" width="60%" / -->
+					<h5>W<span style="text-transform: lowercase;">ojciech</span> B<span style="text-transform: lowercase;">arczyński </span></h5>
+					<!-- h4><span style="text-transform: lowercase;">wojciech.barczynski@wsb.wroclaw.pl</span></h4 -->
+				</section>
+
+
+				<section data-markdown>
+					<script type="text/template">
+#### B<span style="text-transform: lowercase;">ackup Slides</span>
+
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+### P<span style="text-transform: lowercase;">repare your env</span>
+
+- Open `Terminal`
+
+```bash
+sudo apt-get install python3-venv python3-pip -y
+sudo snap install atom --classic
+
+mkdir -p workspace
+cd workspace
+
+# zauważ kropka
+atom .
+```
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+### P<span style="text-transform: lowercase;">repare your env - </span>A<span style="text-transform: lowercase;">tom</span>
+
+Install the following Atom plugins  (Edit->Preferences):
+
+- `platformio-ide-terminal`
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+### T<span style="text-transform: lowercase;">erminal in </span>A<span style="text-transform: lowercase;">tom</span>
+
+- Packages -> platformio-ide-terminal-> Toggle
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+					</script>
+				</section>
+
+			<!-- section>
+				<h3>Licencja</h3>
+				<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0; width:40%" src="img/licence-by.svg" /></a><br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons<br /> Attribution 4.0 International License</a>
+			</section -->
+
+			</div>
+		</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/dependencies.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>

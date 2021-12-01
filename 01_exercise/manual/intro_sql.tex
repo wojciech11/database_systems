@@ -1,0 +1,346 @@
+\documentclass[12pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{enumerate}
+\usepackage{listings}
+\usepackage{fancyvrb}
+\usepackage[T1]{fontenc}
+\usepackage[document]{ragged2e} % keep all left
+
+\usepackage{pmboxdraw} %verbatim utf8
+
+% add cache=false]
+% if issues:
+\usepackage[cache=false]{minted} % yaml syntax highlighting
+
+%\usepackage{tikz}
+%\usetikzlibrary{matrix,positioning}
+
+\newenvironment{markdown}%
+    {\VerbatimEnvironment\begin{VerbatimOut}{tmp.markdown}}%
+    {\end{VerbatimOut}%
+        \immediate\write18{pandoc tmp.markdown -t latex -o tmp.tex}%
+        \input{tmp.tex}}
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\newcommand*{\email}[1]{\href{mailto:#1}{\nolinkurl{#1}} }
+
+\title{{\Huge \textbf{{SQL} 1}}}
+%\author{Wojciech Barczynski}
+\date{}
+
+
+\begin{document}
+
+\begin{titlepage}
+\maketitle
+\end{titlepage}
+
+\tableofcontents
+\pagebreak
+\section{Run Mysql database}
+
+The first step is to learn how to run a mysql database on your workstation. To not spend too much time on the configuration, we will use docker to run your mysql instance.
+
+\subsection{Verify whether your laptop setup}
+
+Let's check whether we have correctly configured Docker, open your terminal and run the following command:
+
+\begin{minted}{bash}
+# on macOS you do not use sudo to run docker
+# commands
+sudo docker ps
+
+# you should see:
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
+\end{minted}
+
+\subsection{Run your instance}
+To start your mysql instance with Docker, run the following command:
+
+\begin{minted}{bash}
+sudo docker run --name wsb-mysql \
+   -e MYSQL_ROOT_PASSWORD=nomoresecret \
+   -p 3306:3306 \
+   -d mysql:8
+
+# check whether you see your database running
+sudo docker ps
+\end{minted}
+
+Notice:
+\begin{itemize}
+\item to stop the Mysql database in Docker: \mintinline{bash}{docker stop wsb-mysql}
+\item to start your Mysql database in Docker: \mintinline{bash}{docker start wsb-mysql}.
+\end{itemize}
+
+\subsection{Mysql {\small CLI}}
+
+You need to install the command line interface mysql package first:
+
+\begin{minted}{bash}
+sudo apt-get update
+sudo apt install -y mysql-client
+\end{minted}
+
+To open the connection to your database:
+
+\begin{minted}{bash}
+# your password is: nomoresecret
+mysql -u root -h 127.0.0.1 -p
+\end{minted}
+
+In the mysql console, please execute the following command: \mintinline{sql}{show databases;}:
+
+\begin{minted}{text}
+mysql> show databases;
+
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+4 rows in set (0.00 sec)
+\end{minted}
+
+\subsection{Mysql Workbench}
+
+We can also use a grafical interface to work with Mysql. There are many available tools, today we will use mysql-workbench\footnote{You might use \href{https://sequelpro.com/download}{sequelpro.com} as well}:
+
+\begin{minted}{bash}
+sudo apt update
+sudo snap install mysql-workbench-community
+snap connect mysql-workbench-community:password-manager-service
+\end{minted}
+
+You can run the workbench from your terminal:
+
+\begin{minted}{bash}
+# if we cannot see fonts:
+export LANG=en_US
+mysql-workbench-community &
+\end{minted}
+
+In the graphical interface select: \emph{Local Instance 3306} (user \emph{root}). To verify that everyhing works, please run the following commands:
+
+\begin{minted}{sql}
+-- 1
+show databases;
+-- 2
+use mysql;
+-- 3
+show tables;
+-- 4
+select * from user;
+\end{minted}
+
+% \begin{itemize}
+% \item \mintinline{sql}{}
+% \item \mintinline{sql}{}
+% \item \mintinline{sql}{}
+% \item \mintinline{sql}{}
+% \end{itemize}
+
+Note down what users we have in the system.
+\bigskip
+\bigskip
+\bigskip
+
+\textbf{Notice}: You should not work as a database user \textbf{root}, you should always create a dedicated admin user for yourself.
+
+%%%%%%%%%%%%%%%%%%%%%%
+\section{Recap}
+
+\subsection{Data Types}
+
+\begin{itemize}
+\item Characters: CHAR(20), VARCHAR(50), TEXT
+\item Numbers: INT, BIGINT, SMALLINT, FLOAT
+\item Logical: BOOL
+\item Others: MONEY, DATETIME...
+\end{itemize}
+
+\subsection{Tables, views, and relations}
+
+\begin{itemize}
+\item relation or table (defined by a schema)
+\item rows
+\item each column (has a type)
+\item key keys
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%
+\section{Create your database}
+
+Let's build our own database.
+
+\bigskip
+1. Open the workbench and create your database with a prefix: \verb|wsb|.
+
+\begin{minted}{sql}
+-- 1: do not forget to change the name
+create database wsbnatalia
+
+-- 2:
+show databases;
+
+-- 3:
+use wsbnatalia
+\end{minted}
+
+\bigskip
+2. Create your first table (in the schemas, choose your database as the default target for your commands):
+
+\begin{minted}{sql}
+CREATE TABLE Products (
+  ProductID CHAR(20),
+  ProductName VARCHAR(50),
+  Price  float,
+  Category VARCHAR(50),
+  SuplierName VARCHAR(50),
+  PRIMARY KEY (ProductID))
+\end{minted}
+
+\bigskip
+
+3. Let's add one product:
+
+\begin{minted}{sql}
+INSERT INTO Products(ProductID, ProductName, Price,
+    Category, SuplierName) VALUES (
+    '123',
+    'Milk',
+    5.9,
+    'Dairy Products',
+    'Mlekovita'
+)
+\end{minted}
+
+\bigskip
+
+3. Let's add one product:
+
+\begin{minted}{sql}
+select * from Product;
+\end{minted}
+
+\bigskip
+4. Please create new table - \verb|Suppliers| and add two rows with the following attributes:
+
+\begin{itemize}
+\item SupplierID (key)
+\item SupplierName
+\item ContactName
+\item Country
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%
+\section{Ecommerce database}
+
+To work with a larger database, we will use the database behind w3schools SQL tutorial (\href{https://www.w3schools.com/sql/default.asp}{w3schools.com/sql}).
+
+\bigskip
+
+1. Download \emph{w3schools.sql} z \emph{https://github.com/wojciech11/w3schools-databasel} (open the file in browser and choose \verb|Raw|):
+
+\begin{minted}{bash}
+# long URL
+wget https://raw.githubuse..
+ls
+
+w3schools.sql
+\end{minted}
+
+\bigskip
+2. Let's load the database through \small{CLI}:
+
+\begin{minted}{bash}
+# your password is: nomoresecret
+$  mysql -u root -h 127.0.0.1 -p
+
+mysql>
+mysql> source w3schools.sql;
+
+# let's see whether the DB is there
+mysql> use w3schools;
+mysql> show tables;
+
+mysql> SELECT customerName, city FROM customers;
+\end{minted}
+
+\bigskip
+3. Go back to \emph|mysql-workbench| and choose w3schools DB as your default target for your queries.
+
+\begin{minted}{sql}
+-- let's explore
+show tables;
+
+-- go through all the tables
+-- and display the top 5
+select * from products limit 5
+
+-- check schema:
+describe table products
+\end{minted}
+
+\bigskip
+3. Choose \verb|Database| $\rightarrow$ \verb|Reverse Engineer| to run a wizard, so we can learn more about the imported database.
+
+%Zauważ rezultat będzie podobny do\\
+%\href{https://www.w3schools.com/sql/trysql.asp?filename=trysql_select_columns}{https://www.w3schools.com/sql/trysql.asp?filename=trysql\_select\_columns} .
+
+%%%%%%%%%%%%%%%%%%%%%%
+\section{Exercises}
+
+\subsection{SFW Queries}
+
+\begin{enumerate}
+ \item \verb|select|;
+ \item \verb|select| and \verb|where|;
+ \item \verb|select|, \verb|where|, and \verb|like|;
+ \item \verb|select| and \verb|distinct|;
+ \item \verb|select|, \verb|where|, and \verb|order by|;
+ \item \verb|select|, \verb|where|, and \verb|count(*)|;
+ \item \verb|update|
+\end{enumerate}
+% select distinct price from products order by price
+
+\subsection{Multiple tables}
+
+\begin{markdown}
+- Supplier, productName
+- ProductName, SupplierName, CategoryName
+- OrderID, CustomerName, OrderDate
+\end{markdown}
+
+Notes:
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+
+
+% \mintinline{text}{add_SMOKE_TEST_to_README}, dodaj sekcję \mintinline{text}{## Smoke tests}
+% \mintinline{bash}{git checkout} możemy anulować zmiany.
+% \textit{x}
+%
+% \begin{minted}{bash}
+% $ git tag -a v1.0.0 -m "Tests for SQL"
+% #
+% git push tag v1.0.0
+% #
+% $ git push --tags
+% \end{minted}
+
+% %%
+% \pagebreak
+% \bigskip
+
+\end{document}

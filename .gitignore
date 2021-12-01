@@ -1,0 +1,11 @@
+# python venv
+**/.venv
+
+# latex
+**/*.aux
+**/*.log
+**/*.out
+**/*.toc
+**/_minted-*
+**/tmp.markdown
+**/tmp.tex
